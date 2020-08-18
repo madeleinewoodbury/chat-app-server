@@ -9,6 +9,9 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 const server = http.createServer(app);
 const io = socektio(server);
 
+app.use(cors());
+app.use(router);
+
 io.on('connection', (socket) => {
   socket.on('join', ({ name, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room });
@@ -51,7 +54,6 @@ io.on('connection', (socket) => {
     }
   });
 });
-app.use(router);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
