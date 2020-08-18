@@ -12,7 +12,7 @@ const io = socektio(server);
 io.on('connection', (socket) => {
   socket.on('join', ({ name, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room });
-    if (error) return callback(error);
+    if (error) return callback({ error });
     socket.join(user.room);
 
     socket.emit('message', {
@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
       room: user.room,
       users: getUsersInRoom(user.room),
     });
-    callback();
+    callback({ error: null });
   });
 
   socket.on('sendMessage', (message, callback) => {

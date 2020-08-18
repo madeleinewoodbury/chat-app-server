@@ -6,12 +6,17 @@ const addUser = ({ id, name, room }) => {
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
+  let usersInRoom = users.filter((user) => user.room === room);
+  if (usersInRoom.length > 10) {
+    return { error: 'Too many users in this room, try a different room' };
+  }
+
   const existingUser = users.find(
     (user) => user.room === room && user.name === name
   );
 
   if (existingUser) {
-    return { error: 'User name is taken' };
+    return { error: 'Username is already taken.' };
   }
 
   const user = { id, name, room };
